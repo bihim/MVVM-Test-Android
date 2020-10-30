@@ -29,13 +29,6 @@ class DoggoRepository {
          }
         return doggoModel
     }
-    /*fun getInstance(): DoggoRepository{
-        if (doggoRepository == null){
-            doggoRepository = DoggoRepository()
-        }
-        return doggoRepository
-    }*/
-
 
     companion object{
         var instance:DoggoRepository = DoggoRepository()

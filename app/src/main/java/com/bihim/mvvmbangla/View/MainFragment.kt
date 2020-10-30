@@ -29,6 +29,7 @@ class MainFragment: Fragment() {
     companion object{
         lateinit var imageView: ImageView
         lateinit var button: Button
+        lateinit var progressbar: ProgressBar
         fun newInstance(): MainFragment{
             return MainFragment()
         }
@@ -42,24 +43,29 @@ class MainFragment: Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_main, container, false)
         imageView = view.findViewById(R.id.imageView)
         button = view.findViewById(R.id.button)
-        button.setOnClickListener{
-            mainActivityViewModel.init()
-            mainActivityViewModel.getDoggoRepository().observe(viewLifecycleOwner, {
-                if (it != null) {
-                    val doggoModel: DoggoModel = it
-                    Log.d("URLRLRLR", "onViewCreated: " + doggoModel.message + " " + doggoModel.status)
-                    imageView.load(doggoModel.message)
-                } else {
-                    Toast.makeText(context, "No data!!!", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+        progressbar = view.findViewById(R.id.progressBar)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        button.setOnClickListener{
+            progressbar.visibility = View.VISIBLE
+            imageView.visibility = View.GONE
+            mainActivityViewModel.init()
+            mainActivityViewModel.getDoggoRepository().observe(viewLifecycleOwner, {
+                if (it != null) {
+                    val doggoModel: DoggoModel = it
+                    Log.d("URLRLRLR", "onViewCreated: " + doggoModel.message + " " + doggoModel.status)
+                    progressbar.visibility = View.GONE
+                    imageView.visibility = View.VISIBLE
+                    imageView.load(doggoModel.message)
+                } else {
+                    Toast.makeText(context, "No data!!!", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 
 }

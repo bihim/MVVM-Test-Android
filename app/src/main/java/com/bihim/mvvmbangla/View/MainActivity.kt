@@ -18,8 +18,9 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance()).commit()
         }
-        /*val viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        viewModel.init()*/
+        checkingNetwork()
+    }
+    fun checkingNetwork(){
         networkMonitor.result = { isAvailable, type ->
             runOnUiThread {
                 when (isAvailable) {
